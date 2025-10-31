@@ -219,5 +219,3 @@ It’s an essential skill for **system administrators**, **IT support engineers*
 **Andrés Vanegas**  
 📍 London, UK  
 🎓 BSc in Computing | IT Systems & Network Enthusiast  
-💼 Vending Operator @ UBS Bank | Aspiring IT Professional  
-🌐 [Tortuga Island Headwear](#) | 💻 [LinkedIn Profile](#)
