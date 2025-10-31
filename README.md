@@ -38,7 +38,26 @@ The goal was to automatically install **7-Zip** across all domain-joined compute
 
 ## 🧱 Step-by-Step Implementation
 
-### 🏗️ 1. OU and User Setup
+## 🔒 1. Disable Control Panel for Lab Users
+
+This policy restricts non-admin users from accessing the Windows Control Panel to maintain system security and prevent unwanted configuration changes.
+
+### Steps Taken
+1. Created a new **GPO** named **“Disable Control Panel”**.
+2. Edited the policy under  
+   **User Configuration → Administrative Templates → Control Panel → Prohibit access to Control Panel and PC settings** → **Enabled**.
+3. Linked the GPO to the **LabUsers OU** only (not Admins or Domain Controllers).
+4. Verified it applied successfully by logging in as **John Williams (Lab User)**.
+
+### Verification
+- When logged in as a Lab User, attempting to open the Control Panel shows a restriction message.  
+- Confirmed with `gpresult /r` showing:
+- [GPO_DisableControlPanel}()
+- [GPO_LinkedToLabUsers]()
+- [ControlPanel_Blocked]()
+
+
+### 🏗️ 2. OU and User Setup
 - Created the following structure in **Active Directory Users and Computers (ADUC):**
   ```
   LabUsers
@@ -53,7 +72,7 @@ The goal was to automatically install **7-Zip** across all domain-joined compute
 
 ---
 
-### 🗂️ 2. Create and Share Software Folder
+### 🗂️ 3. Create and Share Software Folder
 - On DC01, created `C:\Software`
 - Shared it as `\\DC01\Software`
 - Set permissions:
@@ -61,19 +80,22 @@ The goal was to automatically install **7-Zip** across all domain-joined compute
   - **NTFS Permissions:** `Domain Computers` & `Everyone` → Read & Execute  
 
 📸 *Screenshot: Software_Folder_Permissions.png*
+-[Link 1 ](ActiveDirectory_GPO_Project_Screenshots/Software_Folder_Permissions.png)
+-[Link 2](ActiveDirectory_GPO_Project_Screenshots/Software_Folder_Permissions1.png)
 
 ---
 
-### 🧠 3. Create GPO for Software Deployment
+### 🧠 4. Create GPO for Software Deployment
 - Opened **Group Policy Management Console (GPMC)**
 - Created new GPO: **Software Deployment - 7Zip**
 - Linked it to `LabUsers/Peter Rendon/IT Team`
 
 📸 *Screenshot: GPO_Links_View.png*
+-[Link](ActiveDirectory_GPO_Project_Screenshots/GPO_Links_View.png)
 
 ---
 
-### ⚙️ 4. Configure GPO Settings
+### ⚙️ 5. Configure GPO Settings
 **Path:**  
 `Computer Configuration → Policies → Software Settings → Software Installation`
 
@@ -82,28 +104,30 @@ The goal was to automatically install **7-Zip** across all domain-joined compute
 - Saved and closed GPMC
 
 📸 *Screenshot: GPO_Software_Deployment_Settings.png*
+[Link](ActiveDirectory_GPO_Project_Screenshots/GPO_Software_Deployment_Settings.png)
 
 ---
 
-### 🔗 5. Move Target Computer to OU
+### 🔗 6. Move the Target Computer to the OU
 Moved the **WIN10CLIENT** computer object to the **IT Team OU**  
 to ensure the policy would apply during startup.
 
 ---
 
-### 🔄 6. Force Policy Update & Restart
+### 🔄 7. Force Policy Update & Restart
 On the client machine, ran:
 ```cmd
 gpupdate /force
 shutdown /r /t 0
 ```
-After reboot, the GPO applied, and 7-Zip installed automatically.
+After reboot, the GPO was applied, and 7-Zip was installed automatically.
 
 📸 *Screenshot: GPResult_Verification.png*
+-[Link 1](ActiveDirectory_GPO_Project_Screenshots/GPResult_Verification_Command.png)
 
 ---
 
-### ✅ 7. Verify Installation
+### ✅ 8. Verify Installation
 Used these commands to confirm successful deployment:
 
 ```cmd
@@ -116,6 +140,7 @@ C:\Program Files\7-Zip\7zFM.exe
 ```
 
 📸 *Screenshot: Client_7Zip_Installed.png*
+[Link](ActiveDirectory_GPO_Project_Screenshots/Client_7Zip_Installed.png)
 
 ---
 
@@ -130,6 +155,8 @@ C:\Program Files\7-Zip\7zFM.exe
 | Control Panel blocked | GPO restriction applied | Verified install via command line and file explorer |
 
 📸 *Screenshot: Troubleshooting_Gpresult.png*
+[Link1](ActiveDirectory_GPO_Project_Screenshots/GPResult_Verification.png)
+[Link2](ActiveDirectory_GPO_Project_Screenshots/GPResult_Verification1.png)
 
 ---
 
@@ -141,6 +168,7 @@ C:\Program Files\7-Zip\7zFM.exe
 ✅ **OU and domain structure verified through ADUC**  
 
 📸 *Screenshot: OU_Structure_ADUC.png*
+[Link](ActiveDirectory_GPO_Project_Screenshots/OU_Structure_ADUC.png)
 
 ---
 
