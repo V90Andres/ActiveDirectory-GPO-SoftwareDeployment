@@ -52,9 +52,9 @@ This policy restricts non-admin users from accessing the Windows Control Panel t
 ### Verification
 - When logged in as a Lab User, attempting to open the Control Panel shows a restriction message.  
 - Confirmed with `gpresult /r` showing:
-- [GPO_DisableControlPanel}()
-- [GPO_LinkedToLabUsers]()
-- [ControlPanel_Blocked]()
+- [GPO_DisableControlPanel](ActiveDirectory_GPO_Project_Screenshots/GPO_Disable_Control_Panel_Settings.png)
+- [GPO_LinkedToLabUsers](ActiveDirectory_GPO_Project_Screenshots/GPO_LinkedToLabUsers.png)
+- [ControlPanel_Blocked](ActiveDirectory_GPO_Project_Screenshots/Control_Panel_Restriction.png)
 
 
 ### 🏗️ 2. OU and User Setup
